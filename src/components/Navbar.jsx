@@ -1,18 +1,24 @@
 import React, { useState } from "react";
 import styles from "./Navbar.module.css";
 import logo from "./Resume_Analyzer_logo_3.png";
+import { HiUser } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ isAuthenticated, setAuthenticated }) {
   const [activeId, setActiveId] = useState(null);
 
   const handleClick = (id) => {
     setActiveId(id);
   };
+  const handleLogout = () => {
+    setAuthenticated(false);
+    alert("Logged out successfully!");
+  }
 
   const NavItems = [
-    { id: 1, name: "Home", href: "#" },
-    { id: 2, name: "Contact Us", href: "#" },
-    { id: 3, name: "Help", href: "#" },
+    { id: 1, name: "Home", href: "/" },
+    { id: 2, name: "Contact Us", href: "/contact" },
+    { id: 3, name: "Help", href: "/help" },
   ];
 
   return (
@@ -26,9 +32,9 @@ function Navbar() {
               className={`${styles.navItem} ${activeId === item.id ? styles.active : ""}`}
               onClick={() => handleClick(item.id)}
             >
-              <a href={item.href} className={styles.link}>
+              <Link to={item.href} className={styles.link}>
                 {item.name}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -39,9 +45,17 @@ function Navbar() {
             className={`${styles.navItem} ${activeId === 4 ? styles.active : ""}`}
             onClick={() => handleClick(4)}
           >
-            <a href="#" className={styles.link}>
-              Profile
-            </a>
+            <Link to="/profile" className={styles.link}>
+            <HiUser />
+            </Link>
+          </li>
+          {/* Login/Logout button */}
+          <li className={styles.navItem}>
+            {isAuthenticated ? (
+              <button onClick={handleLogout} className={styles.link}>Logout</button>
+            ) : (
+              <Link to="/auth" className={styles.link}>Login</Link>
+            )}
           </li>
         </ul>
       </div>
